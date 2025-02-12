@@ -1,0 +1,27 @@
+* {
+
+
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #7369bd;
+
+  --spacing: 0.25rem;
+
+  --variant-textColor: #7369bd !important;
+  --variant-outlinedColor: #7369bd !important;
+  --variant-outlinedBorder: rgba(25, 118, 210, 0.5);
+  --variant-containedColor: #fff;
+  --variant-containedBg: #7369bd !important;
+
+}
+
+.loginbg {
+  background: linear-gradient(125deg, #fff 67%, #7369bd 25%);
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+}
