@@ -5,8 +5,15 @@ import logo from '../assets/images/logo.svg'
 import SideLink from '../Components/SideLink'
 import { FaHeartPulse, FaUserDoctor } from 'react-icons/fa6'
 import { IoIosLogOut } from 'react-icons/io'
+import { useNavigate } from 'react-router-dom'
 
 const Sidebar = () => {
+    const navigate = useNavigate();
+    const logout = () => {
+        localStorage.clear();
+        navigate('/login');
+    }
+
     return (
         <>
             <div className="w-full bg-black relative h-lvh overflow-y-auto">
@@ -20,13 +27,15 @@ const Sidebar = () => {
                     <li>
                         <SideLink title={'Dashboard'} url={'/dashboard'} icon={<MdDashboard />} />
                     </li>
+                  
+                    <li>
+                        <SideLink title={'Specializations'} url={'specialization'} icon={<MdTypeSpecimen />} />
+                    </li>
                     <li>
                         <SideLink title={'Consultants'} url={'consultants'} icon={<FaHeartPulse />} />
                     </li>
                     <li>
-                        <SideLink title={'Specializations'} url={'consultants'} icon={<MdTypeSpecimen />} />
-                    </li>
-                    <li>
+                        
                         <h4 className="text-md text-gray-400 font-semibold">Doctors</h4>
                     </li>
                     <li>
@@ -36,7 +45,7 @@ const Sidebar = () => {
                 <div className="w-full border-t bg-[var(--primary)] border-gray-400 px-4 py-2 absolute bottom-0 start-0">
                     <ul>
                         <li className='ps-3'>
-                            <button className="flex  text-white gap-3 justify-between">
+                            <button onClick={logout} className="flex  text-white gap-3 justify-between">
                                 <span className="text-xl">
                                     <IoIosLogOut />
                                 </span>
