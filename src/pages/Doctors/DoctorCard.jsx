@@ -4,7 +4,7 @@ import { BASE_URL } from "../../utils";
 
 const DoctorCard = ({ doctor, bookDoctor }) => {
   return (
-    <div className="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white p-6 flex flex-col items-center text-center">
+    <div className="w-full rounded-2xl overflow-hidden shadow-lg bg-white p-6 flex flex-col items-center text-center">
       {/* Profile Image */}
       <img
         className="w-24 h-24 rounded-full border-4 border-gray-300 object-cover"

@@ -1,12 +1,11 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { API_URL, token } from '../../utils';
-import { data, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import DoctorCard from '../Doctors/DoctorCard';
 
 const AcceptReservation = () => {
   const { id } = useParams();
-  const [loading, setLoading] = React.useState(false);
   const [reservation, setReservation] = React.useState();
   const [doctors, setDoctors] = React.useState([]);
   const mtoken = localStorage.getItem(token);

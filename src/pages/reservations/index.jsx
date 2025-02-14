@@ -2,10 +2,18 @@ import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { fetchReservation } from './ReservationApi';
 import { Link } from 'react-router-dom';
-import { formatDate } from '../../utils';
-import { Box } from '@mui/material';
+import { formatDate, formatToDDMMYY } from '../../utils';
+import { Box, Chip } from '@mui/material';
+import UserInfoBox from '../../Components/UserInfoBox';
+import { BsFileExcel } from 'react-icons/bs';
 
 const Reservations = () => {
+    const [selectedIds, setSelectedIds] = React.useState([]);
+
+    const handleSelectionChange = (selection) => {
+        setSelectedIds(selection);
+
+    };
     const [items, setItems] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [page, setPage] = React.useState(0);
@@ -36,7 +44,9 @@ const Reservations = () => {
             srNo: index + 1,
             date: reservation.date,
             slot: reservation.slot?.name,
-            hospital: reservation.hospital || 'N/A',
+            doctor: reservation.doctor,
+            hospital: reservation.hospital?.name || 'N/A',
+            user: reservation.user,
             userName: reservation.user?.name,
             userEmail: reservation.user?.email,
             userPhone: reservation.user?.phone,
@@ -60,19 +70,30 @@ const Reservations = () => {
     const columns = [
         { field: 'srNo', headerName: 'Sr No', width: 80 },
         {
-            field: 'date', headerName: 'Date', width: 150, renderCell: (params) => (
+            field: 'date', headerName: 'Date', width: 210, renderCell: (params) => (
                 <>
-                    {
-                        formatDate(params.row.date).replace('T', ' ')
-                    }
+                    <div className='text-xs'>
+
+                        {
+                            formatToDDMMYY(params.row.date)
+                        }
+                        {
+                            params.row.slot
+                        }
+                    </div>
                 </>
             )
         },
-        { field: 'slot', headerName: 'Slot', width: 180 },
+
         { field: 'hospital', headerName: 'Hospital', width: 180 },
-        { field: 'userName', headerName: 'User Name', width: 150 },
-        { field: 'userEmail', headerName: 'User Email', width: 200 },
-        { field: 'userPhone', headerName: 'User Phone', width: 150 },
+        {
+            field: 'userName', headerName: 'User Name', width: 200, renderCell: (params) => (
+                <>
+                    <UserInfoBox user={params.row.user} />
+                </>
+            )
+        },
+
         { field: 'status', headerName: 'Status', width: 120 },
         { field: 'type', headerName: 'Type', width: 120 },
         { field: 'section', headerName: 'Section', width: 150 },
@@ -93,21 +114,68 @@ const Reservations = () => {
             width: "200",
             renderCell: (params) => (
                 <>
-                    <Link className='px-3 py-2 bg-[var(--primary)] text-white text-xs rounded' to={'/reservation/accept/' + params.row.id}>Accept</Link>
+                    {
+                        params.row.doctor ? (
+                            <>
+                                <Chip label="Doctor Accept" />
+                            </>
+                        ) : (
+                            <>
+                                <Link className='px-3 py-2 bg-[var(--primary)] text-white text-xs rounded' to={'/reservation/accept/' + params.row.id}>Accept</Link>
+
+
+                            </>
+                        )
+                    }
                 </>
             )
         }
     ];
 
     return (
-        <section className='py-10'>
+        <section className=''>
             <div className='container'>
                 <div className='grid grid-cols-12'>
                     <div className='col-span-12'>
+                        <Box boxShadow={3} borderRadius={4} className="mb-7 p-4">
+                            <div className="w-full">
+                                <div className="grid grid-cols-12">
+                                    <div className="col-span-3">
+                                        {
+                                            selectedIds.length > 0 && (
+                                                <>
+                                                    <button className='rounded-full text-white tracking-widest uppercase px-5 text-xs py-2 bg-[var(--primary)]'>Ignore</button>
+
+                                                </>
+                                            )
+                                        }
+
+                                    </div>
+                                    <div className="col-span-4">
+                                        <div className="flex gap-1 *:rounded items-center *:text-xs *:px-2 *:py-1 ">
+
+
+                                            <button  className='bg-gray-300 text-black'>All</button>
+                                            <button className='bg-gray-300 text-black'>Past</button>
+                                            <button  className='bg-gray-300 text-black'>Today</button>
+                                            <button  className='bg-gray-300 text-black'>Upcoming</button>
+                                        </div>
+                                    </div>
+                                    <div className="col-span-4">
+                                        <div className="text-end">
+                                        <button  className='bg-gray-300 text-black'>
+                                            <BsFileExcel/>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Box>
                         <Box boxShadow={3} borderRadius={4}>
 
 
                             <DataGrid
+                                className='*:text-xs'
                                 rows={items}
                                 columns={columns}
                                 pageSize={pageSize}
@@ -120,6 +188,8 @@ const Reservations = () => {
                                 loading={loading}
                                 autoHeight
                                 checkboxSelection
+                                onRowSelectionModelChange={handleSelectionChange}
+                                isRowSelectable={(params) => !params.row.doctor}
                             />
                         </Box>
                     </div>
