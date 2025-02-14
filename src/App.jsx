@@ -5,6 +5,10 @@ import Layout from './Layout'
 import Dashboard from './pages/Dashboard'
 import Specialization from './pages/specilazaion'
 import Doctors from './pages/Doctors'
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import theme from './theme'
+import Reservations from './pages/reservations'
+import AcceptReservation from './pages/reservations/AcceptReservation'
 
 function App() {
   const themeRoutes = createBrowserRouter(
@@ -13,15 +17,21 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/' element={<Layout />}>
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/specialization' element={<Specialization/>} />
-          <Route path='/doctors' element={<Doctors/>} />
+          <Route path='/specialization' element={<Specialization />} />
+          <Route path='/doctors' element={<Doctors />} />
+          <Route path='/consultants' element={<Reservations />} />
+          <Route path='/reservation/accept/:id' element={<AcceptReservation/>} />
         </Route>
       </>
     )
   )
   return (
     <>
-      <RouterProvider router={themeRoutes} />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+
+        <RouterProvider router={themeRoutes} />
+      </ThemeProvider>
     </>
   )
 }

@@ -15,39 +15,31 @@ const DoctorTable = () => {
 
     const handleFilterChange = (model) => {
         console.log("Filter Model:", model); // Debugging: Check what MUI sends
-    
+
         if (!model.items || model.items.length === 0) {
             setFilters([]); // Reset filters if no filters are applied
             return;
         }
-    
+
         const filterArray = model.items
             .filter((filter) => filter.field && filter.value) // Ensure valid filters
             .map((filter) => ({
-                field: filter.field,  // 🔥 Use `field` instead of `columnField`
+                field: filter.field,
                 operator: filter.operator || "contains", // Default operator
                 value: filter.value,
             }));
-    
-        console.log("Processed Filters:", filterArray); // Debugging: Check extracted filters
-    
         setFilters(filterArray);
         setPage(0); // Reset to first page when filters change
     };
-    
-    
     const [search, setSearch] = useState("");
-
     const loadDoctors = async () => {
+        console.log(search)
         setLoading(true);
         const { data, total, currentPage } = await fetchDoctors({ page, pageSize, filters });
-
-        // Ensure every row has an `id` property
         const formattedData = data.map((doctor) => ({
             id: doctor._id,
             ...doctor
         }));
-
         setDoctors(formattedData);
         setTotal(total);
         setPage(currentPage);
@@ -66,32 +58,48 @@ const DoctorTable = () => {
 
     // Define columns for the DataGrid
     const columns = [
-        { field: "id", headerName: "Sr No", width: 80 },
+        { field: "id", headerName: "Sr No", width: 80, filterable: false },
         {
             field: "image",
             headerName: "Profile",
             width: 100,
+            filterable: false,
+            sortable: false, 
             renderCell: (params) => <Avatar src={params.value} alt="Doctor" />
         },
         { field: "name", headerName: "Name", flex: 1, minWidth: 150 },
         { field: "email", headerName: "Email", flex: 1, minWidth: 180 },
-        { field: "phone", headerName: "Phone", width: 120 },
+        { field: "phone", headerName: "Phone", width: 120,  sortable: false,  },
         {
             field: "specializations",
             headerName: "Specializations",
             flex: 1,
             minWidth: 280,
+            filterable: false,
+            sortable: false, 
             renderCell: (params) => (
 
 
+                <ul className="h-40 overflow-y-auto *:text-xs">
+                    
+                        {
+                            params.value.map((spec) => (
+                                <>
+                                <li>
+                                {
+                                      ` ${spec.specialization.name} - ₹${spec.price}`
+                                    }
+                                </li>
+                                   
+                                </>
+                            ))
+                        }
 
-                params.value.map((spec, index) => (
-                    <>
-                        <div className="text-wrap">
-                            <Chip key={index} label={`${spec.specialization.name} - ₹${spec.price}`} color="primary" className="m-1" />
-                        </div>
-                    </>
-                ))
+                    
+
+
+
+                </ul>
             )
         },
         { field: "experience", headerName: "Experience (yrs)", width: 140 },
@@ -147,7 +155,7 @@ const DoctorTable = () => {
                 onPageSizeChange={(newSize) => setPageSize(newSize)}
                 loading={loading}
                 filterMode="server"
-                onFilterModelChange={(model) => handleFilterChange(model)} 
+                onFilterModelChange={(model) => handleFilterChange(model)}
                 disableSelectionOnClick
                 sx={{
                     "& .MuiDataGrid-columnHeaders": { backgroundColor: "#fff", color: "black" },

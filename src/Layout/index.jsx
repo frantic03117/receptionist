@@ -7,23 +7,23 @@ import { ToastContainer } from 'react-toastify';
 const Layout = () => {
     return (
         <>
-        <ToastContainer
-                            position="top-right"
-                            autoClose={5000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover
-                            theme="colored"
-                        />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <section>
                 <div className="@container mx-auto">
                     <div className="grid grid-cols-15">
                         <div className="col-span-3">
-                            <div className="w-full">
+                            <div className="w-full sticky top-0">
                                 <Sidebar />
                             </div>
                         </div>
