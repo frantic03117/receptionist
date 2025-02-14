@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { fetchReservation } from './ReservationApi';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils';
+import { Box } from '@mui/material';
 
 const Reservations = () => {
     const [items, setItems] = React.useState([]);
@@ -58,13 +59,15 @@ const Reservations = () => {
 
     const columns = [
         { field: 'srNo', headerName: 'Sr No', width: 80 },
-        { field: 'date', headerName: 'Date', width: 150, renderCell : (params) => (
-            <>
-                {
-                    formatDate(params.row.date).replace('T', ' ')
-                }
-            </>
-        ) },
+        {
+            field: 'date', headerName: 'Date', width: 150, renderCell: (params) => (
+                <>
+                    {
+                        formatDate(params.row.date).replace('T', ' ')
+                    }
+                </>
+            )
+        },
         { field: 'slot', headerName: 'Slot', width: 180 },
         { field: 'hospital', headerName: 'Hospital', width: 180 },
         { field: 'userName', headerName: 'User Name', width: 150 },
@@ -75,20 +78,22 @@ const Reservations = () => {
         { field: 'section', headerName: 'Section', width: 150 },
         { field: 'specialization', headerName: 'Specialization', width: 200 },
         { field: 'prescription', headerName: 'Prescription Uploaded', width: 180 },
-        { field: 'createdAt', headerName: 'Created At', width: 180, renderCell : (params) =>  (
-            <>
-                {
-                    formatDate(params.row.createdAt).replace('T', ' ')
-                }
-            </>
-        ) },
+        {
+            field: 'createdAt', headerName: 'Created At', width: 180, renderCell: (params) => (
+                <>
+                    {
+                        formatDate(params.row.createdAt).replace('T', ' ')
+                    }
+                </>
+            )
+        },
         {
             field: "Action",
             headerName: "Action",
             width: "200",
             renderCell: (params) => (
                 <>
-                    <Link className='px-3 py-2 bg-[var(--primary)] text-white text-xs rounded' to={'/reservation/accept/'+params.row.id}>Accept</Link>
+                    <Link className='px-3 py-2 bg-[var(--primary)] text-white text-xs rounded' to={'/reservation/accept/' + params.row.id}>Accept</Link>
                 </>
             )
         }
@@ -99,20 +104,24 @@ const Reservations = () => {
             <div className='container'>
                 <div className='grid grid-cols-12'>
                     <div className='col-span-12'>
-                        <DataGrid
-                            rows={items}
-                            columns={columns}
-                            pageSize={pageSize}
-                            rowCount={total}
-                            pagination
-                            paginationMode='server'
-                            onPageChange={(newPage) => setPage(newPage)}
-                            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                            onFilterModelChange={(model) => handleFilterChange(model)}
-                            loading={loading}
-                            autoHeight
-                            checkboxSelection
-                        />
+                        <Box boxShadow={3} borderRadius={4}>
+
+
+                            <DataGrid
+                                rows={items}
+                                columns={columns}
+                                pageSize={pageSize}
+                                rowCount={total}
+                                pagination
+                                paginationMode='server'
+                                onPageChange={(newPage) => setPage(newPage)}
+                                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                                onFilterModelChange={(model) => handleFilterChange(model)}
+                                loading={loading}
+                                autoHeight
+                                checkboxSelection
+                            />
+                        </Box>
                     </div>
                 </div>
             </div>

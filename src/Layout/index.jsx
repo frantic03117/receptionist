@@ -1,10 +1,23 @@
-// import React from 'react'
+import React from 'react'
+import { token } from '../utils';
 import Header from './Header'
 import Sidebar from './Sidebar'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 
 const Layout = () => {
+    const navigate = useNavigate();
+    const {pathname} = useLocation();
+    const gettoken = () => {
+        const mtoken = localStorage.getItem(token);
+        if(!mtoken){
+            navigate('/login');
+        }
+    }
+    React.useEffect(() => {
+        gettoken();
+    }, [pathname]);
+   
     return (
         <>
             <ToastContainer
