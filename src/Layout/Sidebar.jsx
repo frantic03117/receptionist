@@ -41,6 +41,9 @@ const Sidebar = () => {
                     <li>
                         <SideLink title={'List Doctors'} url={'doctors'} icon={<FaUserDoctor />} />
                     </li>
+                    <li>
+                        <SideLink title={'List Users'} url={'users'} icon={<FaUserDoctor />} />
+                    </li>
                 </ul>
                 <div className="w-full border-t bg-[var(--primary)] border-gray-400 px-4 py-2 absolute bottom-0 start-0">
                     <ul>

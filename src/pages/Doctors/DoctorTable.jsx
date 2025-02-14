@@ -8,13 +8,12 @@ import { fetchDoctors } from "./DoctorApi";
 const DoctorTable = () => {
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(0); // MUI DataGrid uses 0-based index
+    const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(0);
     const [filters, setFilters] = useState([]);
 
     const handleFilterChange = (model) => {
-        console.log("Filter Model:", model); // Debugging: Check what MUI sends
 
         if (!model.items || model.items.length === 0) {
             setFilters([]); // Reset filters if no filters are applied
@@ -64,41 +63,36 @@ const DoctorTable = () => {
             headerName: "Profile",
             width: 100,
             filterable: false,
-            sortable: false, 
+            sortable: false,
             renderCell: (params) => <Avatar src={params.value} alt="Doctor" />
         },
         { field: "name", headerName: "Name", flex: 1, minWidth: 150 },
         { field: "email", headerName: "Email", flex: 1, minWidth: 180 },
-        { field: "phone", headerName: "Phone", width: 120,  sortable: false,  },
+        { field: "phone", headerName: "Phone", width: 120, sortable: false, },
         {
             field: "specializations",
             headerName: "Specializations",
             flex: 1,
             minWidth: 280,
             filterable: false,
-            sortable: false, 
+            sortable: false,
             renderCell: (params) => (
 
 
                 <ul className="h-40 overflow-y-auto *:text-xs">
-                    
-                        {
-                            params.value.map((spec) => (
-                                <>
+
+                    {
+                        params.value.map((spec) => (
+                            <>
                                 <li>
-                                {
-                                      ` ${spec.specialization.name} - ₹${spec.price}`
+                                    {
+                                        ` ${spec.specialization.name} - ₹${spec.price}`
                                     }
                                 </li>
-                                   
-                                </>
-                            ))
-                        }
 
-                    
-
-
-
+                            </>
+                        ))
+                    }
                 </ul>
             )
         },

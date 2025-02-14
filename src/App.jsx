@@ -9,6 +9,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import theme from './theme'
 import Reservations from './pages/reservations'
 import AcceptReservation from './pages/reservations/AcceptReservation'
+import Users from './pages/Users'
 
 function App() {
   const themeRoutes = createBrowserRouter(
@@ -16,9 +17,11 @@ function App() {
       <>
         <Route path='/login' element={<Login />} />
         <Route path='/' element={<Layout />}>
+          <Route path='/' element={<Dashboard />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/specialization' element={<Specialization />} />
           <Route path='/doctors' element={<Doctors />} />
+          <Route path='/users' element={<Users />} />
           <Route path='/consultants' element={<Reservations />} />
           <Route path='/reservation/accept/:id' element={<AcceptReservation/>} />
         </Route>
