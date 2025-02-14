@@ -5,20 +5,20 @@
 }
 
 :root {
-  --primary: #7369bd;
+  --primary: #008080;
 
   --spacing: 0.25rem;
 
-  --variant-textColor: #7369bd !important;
-  --variant-outlinedColor: #7369bd !important;
+  --variant-textColor: #008080 !important;
+  --variant-outlinedColor: #008080 !important;
   --variant-outlinedBorder: rgba(25, 118, 210, 0.5);
   --variant-containedColor: #fff;
-  --variant-containedBg: #7369bd !important;
+  --variant-containedBg: #008080 !important;
 
 }
 
 .loginbg {
-  background: linear-gradient(125deg, #fff 67%, #7369bd 25%);
+  background: linear-gradient(125deg, #f5fffff7 67%, #008080 25%);
   min-height: 100vh;
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { InputAdornment, TextField } from '@mui/material'
-// import loginbg from '../assets/images/loginbg.png'
+import loginbg from '../assets/images/loginbg.gif'
 import { FaEnvelope, FaLock } from 'react-icons/fa'
 import logo from '../assets/images/logo.png'
 import { useNavigate } from 'react-router-dom'
@@ -22,7 +22,7 @@ const Login = () => {
             setMsg(resp.data.message);
             setLoading(false);
             navigate('/dashboard');
-        }else{
+        } else {
             setMsg('Invalid credentials');
             setStatus('0');
         }
@@ -41,16 +41,21 @@ const Login = () => {
                     <div className="grid grid-cols-12">
                         <div className="col-span-7">
                             <div className="w-full min-h-lvh flex items-center justify-center">
-                                <div className="w-full ">
+                                <div className="w-full perspective-distant relative   flex flex-col items-center justify-center">
+                                    <div className="size-24 rounded-full opacity-30 bg-radial-[at_25%_25%] from-white to-teal-700 to-75%"></div>
+                                    <div className="size-24 rounded-full absolute start-10 top-[50%] opacity-30 bg-radial-[at_25%_25%] from-white to-teal-700 to-75%"></div>
+                                    <img src={loginbg} alt="" className="w-[600px]  " />
+                                    <div className="size-24 rounded-full absolute end-10 top-[50%] opacity-30 bg-radial-[at_25%_25%] from-white to-teal-700 to-75%"></div>
 
-                                    {/* <img src={loginbg} alt="" className="w-[400px] me-auto" /> */}
+                                    <div className="size-24 rounded-full opacity-30 bg-radial-[at_25%_25%] from-white to-teal-700 to-75%"></div>
+
                                 </div>
 
                             </div>
                         </div>
                         <div className="col-span-5">
-                            <div className="w-full p-10 h-full min-h-lvh flex justify-center items-center">
-                                <div className="w-full bg-white rounded-lg p-10 shadow-md shadow-gray-800">
+                            <div className="w-full p-10 perspective-distant h-full min-h-lvh flex justify-center items-center">
+                                <div className="w-full   transform-3d bg-white rounded-lg p-10 shadow-md shadow-gray-800">
                                     <div className="form-group flex justify-start mb-5 items-center">
                                         <img src={logo} alt="" className="w-[150px]" />
                                     </div>

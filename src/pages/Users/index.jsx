@@ -30,7 +30,8 @@ const Users = () => {
     const getItems = async () => {
         setLoading(true);
         const { data, total, currentPage } = await fetchUsers({ page, pageSize, filters });
-        const formattedData = data.map((doctor) => ({
+        const formattedData = data.map((doctor, index) => ({
+            sr: index + 1,
             id: doctor._id,
             ...doctor
         }));
@@ -45,9 +46,30 @@ const Users = () => {
     }, [page, pageSize]);  // Ensure it refetches when page or pageSize changes
 
     const columns = [
-        { field: "id", headerName: "Sr No", width: 80, filterable: false },
+        { field: "sr", headerName: "Sr No", width: 80, filterable: false },
         { field: "name", headerName: "Name", width: 150 },
-        // Add more columns as needed
+        { field: "is_aadhaar_verified", headerName: "Is Aadhaar Verified", width: 180 },
+        { field: "pan_no", headerName: "PAN Number", width: 180 },
+        { field: "is_pan_verified", headerName: "Is PAN Verified", width: 180 },
+        { field: "blood_group", headerName: "Blood Group", width: 150 },
+        { field: "hospitals", headerName: "Hospitals", width: 200 },
+        { field: "is_verified", headerName: "Is Verified", width: 150 },
+        { field: "doctor_type", headerName: "Doctor Type", width: 150 },
+        { field: "phone", headerName: "Phone", width: 150 },
+        { field: "is_phone_verified", headerName: "Is Phone Verified", width: 180 },
+        { field: "user_name", headerName: "User Name", width: 180 },
+        { field: "gender", headerName: "Gender", width: 150 },
+        { field: "marital_status", headerName: "Marital Status", width: 180 },
+        { field: "work_experience", headerName: "Work Experience", width: 180 },
+
+        { field: "dob", headerName: "Date of Birth", width: 180 },
+        { field: "deleted_at", headerName: "Deleted At", width: 180 },
+        { field: "blocked_at", headerName: "Blocked At", width: 180 },
+        { field: "is_active", headerName: "Is Active", width: 150 },
+        { field: "user_type", headerName: "User Type", width: 180 },
+        { field: "created_at", headerName: "Created At", width: 200 },
+        { field: "updated_at", headerName: "Updated At", width: 200 },
+
     ];
 
     return (
@@ -55,7 +77,7 @@ const Users = () => {
             <div className="container">
                 <div className="grid grid-cols-12 gap-5">
                     <div className="col-span-12">
-                        <Box className="p-5" boxShadow={3} borderRadius={2}>
+                        <Box className="p-5 bg-white" boxShadow={3} borderRadius={2}>
                             <DataGrid
                                 rows={items}
                                 columns={columns}
@@ -66,7 +88,7 @@ const Users = () => {
                                 loading={loading}
                                 onPageChange={(newPage) => setPage(newPage)}
                                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                                paginationMode="server"  
+                                paginationMode="server"
                                 onFilterModelChange={(model) => handleFilterChange(model)}
                                 disableSelectionOnClick
                             />

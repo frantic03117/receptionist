@@ -1,14 +1,16 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { API_URL, token } from '../../utils';
-import {  useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import DoctorCard from '../Doctors/DoctorCard';
+import { toast } from 'react-toastify';
 
 const AcceptReservation = () => {
   const { id } = useParams();
   const [reservation, setReservation] = React.useState();
   const [doctors, setDoctors] = React.useState([]);
   const mtoken = localStorage.getItem(token);
+  const navigate = useNavigate();
   const bookDoctor = async (docid) => {
     const data = {
       "_id" : id,
@@ -20,7 +22,10 @@ const AcceptReservation = () => {
         Authorization: "Bearer " + mtoken
       }
     });
-    console.log(resp);
+    if(!resp.data.error){
+      toast.success('Accepted successfully');
+      navigate('/')
+    }
   }
   const getResDetails = async () => {
     const resp = await axios.get(API_URL + "/hospital/receptionist/reservation-details?_id=" + id, {
@@ -38,7 +43,7 @@ const AcceptReservation = () => {
       params: {
         request_id: id,
         date: reservation.date,
-        slot: reservation.slot._id
+        slot: reservation.slot?._id
       }
     });
     setDoctors(rsp.data.data);
@@ -47,10 +52,10 @@ const AcceptReservation = () => {
     getResDetails();
   }, []);
   React, useEffect(() => {
-    if (reservation) {
+    
       getdoctors();
       console.log(reservation)
-    }
+    
   }, [reservation]);
   return (
     <>

@@ -1,7 +1,7 @@
 // import React from 'react'
 import { MdDashboard, MdTypeSpecimen } from 'react-icons/md'
 // import { Link } from 'react-router-dom'
-import logo from '../assets/images/logo.svg'
+import logo from '../assets/images/logo.png'
 import SideLink from '../Components/SideLink'
 import { FaHeartPulse, FaUserDoctor } from 'react-icons/fa6'
 import { IoIosLogOut } from 'react-icons/io'
@@ -18,7 +18,7 @@ const Sidebar = () => {
         <>
             <div className="w-full bg-black relative h-lvh overflow-y-auto">
                 <div className="w-full mb-5 p-3 border-b border-gray-400">
-                    <img src={logo} alt="" className="w-[120px]  rounded" />
+                    <img src={logo} alt="" className="w-[60px] mx-auto bg-[var(--primary)]  rounded" />
                 </div>
                 <ul className=' ps-4 pe-10 pt-0 m-0 *:mb-2'>
                     <li>
