@@ -19,7 +19,7 @@ export const fetchReservation = async ({ page, pageSize, filters }) => {
         });
         console.log(response);
         return {
-            data: response.data?.data?.reservation_list,
+            data: response.data?.data,
             total: response.data.others?.total,
             totalPages: response.data.others?.totalPages,
             currentPage: response.data.others?.currentPage - 1
