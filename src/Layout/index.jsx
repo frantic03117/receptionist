@@ -5,9 +5,10 @@ import Sidebar from './Sidebar'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 import Loader from '../Components/Loader';
-
+import { useApp } from '../AppContext';
 const Layout = () => {
     const navigate = useNavigate();
+    const { side } = useApp();
     const { pathname } = useLocation();
     const [loading, setLoading] = React.useState(true);
     const gettoken = () => {
@@ -27,11 +28,10 @@ const Layout = () => {
             {
                 loading ? (
                     <>
-                        <Loader/>
+                        <Loader />
                     </>
                 ) : (
                     <>
-
                         <ToastContainer
                             position="top-right"
                             autoClose={5000}
@@ -47,12 +47,12 @@ const Layout = () => {
                         <section>
                             <div className="@container mx-auto">
                                 <div className="grid grid-cols-15">
-                                    <div className="col-span-3">
+                                    <div className={`${side ? 'col-span-1' : 'col-span-3'}`}>
                                         <div className="w-full sticky top-0">
                                             <Sidebar />
                                         </div>
                                     </div>
-                                    <div className="col-span-12 bg-gray-100">
+                                    <div className={`${side ? 'col-span-14' : 'col-span-12'} bg-gray-100`}>
                                         <div className="w-full p-2">
                                             <Header />
                                         </div>

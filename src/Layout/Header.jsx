@@ -3,15 +3,28 @@ import { Badge } from '@mui/material'
 import { GoBell, GoSearch } from 'react-icons/go'
 import { IoSettingsOutline } from 'react-icons/io5'
 import adminimg from '../assets/images/avatar.png'
+import { CloseOutlined, MenuOutlined } from '@mui/icons-material'
+import { useApp } from '../AppContext'
 const Header = () => {
+    const { side, handleSide } = useApp();
     return (
         <>
             <div className="w-full  px-5 py-2 bg-white rounded-md shadow-sm shadow-gray-300">
                 <div className="grid grid-cols-12">
-                    <div className="col-span-2">
-                        <div className="w-full">
+                    <div className={`col-span-2`}>
+                        <div className="w-full flex gap-2">
                             <button className='text-2xl'>
                                 <GoSearch />
+                            </button>
+                            <button onClick={handleSide} className='text-2xl'>
+                                {
+                                    side ? (
+                                        <CloseOutlined />
+                                    ) : (
+                                        <MenuOutlined />
+                                    )
+                                }
+
                             </button>
                         </div>
                     </div>

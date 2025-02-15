@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Box, Chip, Typography, Avatar, TextField } from "@mui/material";
+import { Box, Chip, Typography, Avatar, Grid, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-// import { fetchDoctors } from "./api";  // Import the API function
-import debounce from "lodash.debounce";
 import { fetchDoctors } from "./DoctorApi";
+import { Link } from "react-router-dom";
 
 const DoctorTable = () => {
     const [doctors, setDoctors] = useState([]);
@@ -12,14 +11,11 @@ const DoctorTable = () => {
     const [pageSize, setPageSize] = useState(5);
     const [total, setTotal] = useState(0);
     const [filters, setFilters] = useState([]);
-
     const handleFilterChange = (model) => {
-
         if (!model.items || model.items.length === 0) {
             setFilters([]); // Reset filters if no filters are applied
             return;
         }
-
         const filterArray = model.items
             .filter((filter) => filter.field && filter.value) // Ensure valid filters
             .map((filter) => ({
@@ -30,12 +26,13 @@ const DoctorTable = () => {
         setFilters(filterArray);
         setPage(0); // Reset to first page when filters change
     };
-    const [search, setSearch] = useState("");
+
     const loadDoctors = async () => {
-        console.log(search)
+
         setLoading(true);
         const { data, total, currentPage } = await fetchDoctors({ page, pageSize, filters });
-        const formattedData = data.map((doctor) => ({
+        const formattedData = data.map((doctor, index) => ({
+            sr: index + 1,
             id: doctor._id,
             ...doctor
         }));
@@ -51,13 +48,11 @@ const DoctorTable = () => {
     }, [page, pageSize, filters]);
 
     // Debounce search input to avoid too many API calls
-    const handleSearch = debounce((value) => {
-        setSearch(value);
-    }, 500);
+
 
     // Define columns for the DataGrid
     const columns = [
-        { field: "id", headerName: "Sr No", width: 80, filterable: false },
+        { field: "sr", headerName: "Sr No", width: 80, filterable: false },
         {
             field: "image",
             headerName: "Profile",
@@ -69,6 +64,7 @@ const DoctorTable = () => {
         { field: "name", headerName: "Name", flex: 1, minWidth: 150 },
         { field: "email", headerName: "Email", flex: 1, minWidth: 180 },
         { field: "phone", headerName: "Phone", width: 120, sortable: false, },
+        { field: "gender", headerName: "Gender", width: 100 },
         {
             field: "specializations",
             headerName: "Specializations",
@@ -98,7 +94,7 @@ const DoctorTable = () => {
         },
         { field: "experience", headerName: "Experience (yrs)", width: 140 },
         { field: "ratings", headerName: "Ratings", width: 120 },
-        { field: "reviews", headerName: "Reviews", width: 100 },
+
         {
             field: "is_active",
             headerName: "Active",
@@ -115,33 +111,51 @@ const DoctorTable = () => {
                 <Chip label={params.value ? "Yes" : "No"} color={params.value ? "success" : "warning"} />
             )
         },
-        { field: "gender", headerName: "Gender", width: 100 },
         {
-            field: "dob",
-            headerName: "DOB",
-            width: 150,
-            renderCell: (params) => new Date(params.value).toLocaleDateString()
-        },
+            field: 'id',
+            headerName: "Action",
+            width: 200,
+            renderCell: (params) => (
+                <>
+                    <Link to={`/doctor/edit/${params.row._id}`} style={{ textDecoration: "none" }}>
+                        <Button variant="contained" color="primary.main" size="small">
+                            Edit
+                        </Button>
+                    </Link>
+
+
+                </>
+            )
+        }
+
+
     ];
 
     return (
         <Box sx={{ width: "100%", p: 3, backgroundColor: "white", boxShadow: 2, borderRadius: 2 }}>
-            <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "primary.main" }}>
-                Doctors List
-            </Typography>
-            {/* Search Input */}
-            <TextField
-                label="Search by Name or Email"
-                variant="outlined"
-                fullWidth
-                onChange={(e) => handleSearch(e.target.value)}
-                sx={{ mb: 2 }}
-            />
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "primary.main" }}>
+                        Doctors List
+                    </Typography>
+                </Grid>
+                <Grid item xs={6} textAlign={'end'}>
+                    <Link to={'/doctor/create'} className="px-4 py-2 bg-[var(--primary)] text-white rounded text-xs">Add New Doctor</Link>
+                </Grid>
+            </Grid>
+
+
+            <div className="w-full">
+                <div className="grid grid-cols-12 gap-5">
+                    <div className="col-span-4">
+                        <label htmlFor=""></label>
+                    </div>
+                </div>
+            </div>
             <DataGrid
                 rows={doctors}
                 columns={columns}
                 pageSize={pageSize}
-                rowsPerPageOptions={[5, 10, 20]}
                 paginationMode="server"
                 rowCount={total}
                 page={page}

@@ -1,14 +1,15 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { fetchReservation } from './ReservationApi';
-import { Link } from 'react-router-dom';
+import { fetchReservation_withStatus } from './ReservationApi';
+import { Link, useParams } from 'react-router-dom';
 import { formatDate, formatToDDMMYY } from '../../utils';
 import { Box, Chip } from '@mui/material';
 import UserInfoBox from '../../Components/UserInfoBox';
 
 import ExportButton from '../../Components/ExportButton';
 
-const Reservations = () => {
+const AcceptedReservations = () => {
+    const { status } = useParams();
     const [selectedIds, setSelectedIds] = React.useState([]);
 
     const handleSelectionChange = (selection) => {
@@ -43,7 +44,7 @@ const Reservations = () => {
     }
     const getItems = async () => {
         setLoading(true);
-        const { data, total, currentPage } = await fetchReservation({ page, pageSize, filters, time_period });
+        const { data, total, currentPage } = await fetchReservation_withStatus({ page, pageSize, filters, time_period, status });
         const formattedData = data.map((reservation, index) => ({
             id: reservation._id,
             srNo: index + 1,
@@ -70,7 +71,7 @@ const Reservations = () => {
 
     React.useEffect(() => {
         getItems();
-    }, [page, pageSize, filters, time_period]);
+    }, [page, pageSize, filters, time_period, status]);
 
     const columns = [
         { field: 'srNo', headerName: 'Sr No', width: 80 },
@@ -208,4 +209,4 @@ const Reservations = () => {
     );
 };
 
-export default Reservations;
+export default AcceptedReservations;
