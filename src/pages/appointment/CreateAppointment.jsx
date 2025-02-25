@@ -41,7 +41,10 @@ const CreateAppointment = () => {
             },
         });
         if (!resp.data.error) {
-            toast.success('Appointment fixed')
+            toast.success('Appointment fixed');
+            setSlots([]);
+            setUdata({});
+
         }
     }
 
