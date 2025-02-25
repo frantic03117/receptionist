@@ -29,7 +29,6 @@ const CreateAppointment = () => {
             "slot": slot_id,
             "hospital": doctors.find(itm => itm._id == doc_id)?.hospitals[0],
             "doctor": doc_id,
-
             "specialization": spcl,
             "appointment_fees": doctors.find(itm => itm._id == doc_id)?.specializations.find(obj => obj.specialization._id == spcl)?.price,
             "consultation_fees": 200,
@@ -44,7 +43,6 @@ const CreateAppointment = () => {
             toast.success('Appointment fixed');
             setSlots([]);
             setUdata({});
-
         }
     }
 
@@ -58,7 +56,6 @@ const CreateAppointment = () => {
                 date: sdate
             }
         });
-        console.log(resp);
         setSlots(resp.data.misc);
     }
     const handleSelectSlot = (id) => {
