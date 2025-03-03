@@ -74,9 +74,6 @@ const CreateAppointment = () => {
         console.log(e.target.value)
     }
     const getbgcolor = (itm) => {
-        if (itm.label == "Available") {
-            return '';
-        }
         if (itm.label == "Reserved") {
             return 'bg-blue-700 text-white';
         }
