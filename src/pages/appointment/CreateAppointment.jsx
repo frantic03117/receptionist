@@ -163,7 +163,7 @@ const CreateAppointment = () => {
                                 {
                                     slots.map(itm => (
                                         <>
-                                            <Grid onClick={() => !itm.blocked && handleSelectSlot(itm._id)} item className={`p-2 cursor-pointer text-xs border border-[var(--primary)] ${slot_id == itm._id ? 'bg-[var(--primary)] text-white' : itm.blocked ? 'bg-red-500 text-white' : ''}`} lg={2} xs={2}>
+                                            <Grid onClick={() => itm.label == "Available" && handleSelectSlot(itm._id)} item className={`p-2 cursor-pointer text-xs border border-[var(--primary)] ${slot_id == itm._id ? 'bg-[var(--primary)] text-white' : itm.blocked ? 'bg-red-500 text-white' : itm.label == "Reserved" ? 'bg-blue-700 text-white' : ''}`} lg={2} xs={2}>
                                                 {itm.name}
                                             </Grid>
                                         </>
