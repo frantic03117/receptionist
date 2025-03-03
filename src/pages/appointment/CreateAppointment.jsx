@@ -58,8 +58,13 @@ const CreateAppointment = () => {
         });
         setSlots(resp.data.misc);
     }
-    const handleSelectSlot = (id) => {
-        setSlotId(id);
+    const handleSelectSlot = (itm) => {
+        if (itm.label == "Available") {
+            setSlotId(itm._id);
+        } else {
+            alert('Please select valid slot')
+        }
+
     }
     const getdoctors = async () => {
         const resp = await axios.get(API_URL + "/hospital/receptionist/list/doctors", {
@@ -171,7 +176,7 @@ const CreateAppointment = () => {
                                 {
                                     slots.map(itm => (
                                         <>
-                                            <Grid onClick={() => itm.label == "Available" && handleSelectSlot(itm._id)} item className={`p-2 cursor-pointer text-xs border border-[var(--primary)] ${getbgcolor(itm)}`} lg={2} xs={2}>
+                                            <Grid onClick={() => handleSelectSlot(itm)} item className={`p-2 cursor-pointer text-xs border border-[var(--primary)] ${getbgcolor(itm)}`} lg={2} xs={2}>
                                                 {itm.name}
                                             </Grid>
                                         </>
