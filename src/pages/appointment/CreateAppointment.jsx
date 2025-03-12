@@ -1,11 +1,13 @@
 import React from 'react'
-
+import { useRazorpay } from "react-razorpay";
 import { Box, Button, Grid, MenuItem, TextField } from "@mui/material"
 import axios from 'axios';
 import { API_URL, token } from '../../utils';
-import { toast } from 'react-toastify';
+import { useApp } from '../../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const CreateAppointment = () => {
+    const { Razorpay } = useRazorpay();
     const [doctors, setDoctors] = React.useState([]);
     const [doc_id, setDocId] = React.useState('');
     const [sdate, setSdate] = React.useState('');
@@ -14,6 +16,57 @@ const CreateAppointment = () => {
     const [slot_id, setSlotId] = React.useState('');
     const [udata, setUdata] = React.useState({});
     const [spcl, setSpcl] = React.useState('');
+    const [order, setOrder] = React.useState(false);
+    const { settings } = useApp();
+    const rozkey = settings.find(obj => obj.key == "banking_key")?.value;
+    const navigate = useNavigate();
+    const consultantfee = settings.find(obj => obj.key == "appointment_fees")?.value;
+    const handlePayment = async () => {
+
+        const options = {
+            key: rozkey,
+            amount: order?.amount,
+            currency: "INR",
+            name: "Consulto Online hospitals APP",
+            description: "Consulto Online App",
+            order_id: order.razorpay_order_id,
+            handler: (response) => {
+                updatePaymentGateway(response);
+            },
+            prefill: {
+                name: udata?.user_name,
+                email: "demo@test.com",
+                contact: udata?.user_phone,
+            },
+            theme: {
+                color: "#F37254",
+            },
+        };
+        const razorpayInstance = new Razorpay(options);
+        razorpayInstance.open();
+    }
+    const updatePaymentGateway = async (data) => {
+        const udata = {
+            order_id: order.order_id,
+            ...data
+        }
+        const resp = await axios.put(API_URL + "/hospital/receptionist/update-payment-of-reservation", udata, {
+            headers: {
+                Authorization: "Bearer " + mtoken
+            },
+        });
+        if (!resp.data.error) {
+            navigate('/consultants');
+        }
+        console.log(resp);
+    }
+    React.useEffect(() => {
+        if (order) {
+            handlePayment();
+        }
+
+    }, [order])
+
     const handleUdata = (e) => {
         const key = e.target.name;
         const value = e.target.value;
@@ -23,6 +76,7 @@ const CreateAppointment = () => {
         }));
     }
     const saveAppointment = async () => {
+
         const data = {
             ...udata,
             "date": sdate,
@@ -31,7 +85,7 @@ const CreateAppointment = () => {
             "doctor": doc_id,
             "specialization": spcl,
             "appointment_fees": doctors.find(itm => itm._id == doc_id)?.specializations.find(obj => obj.specialization._id == spcl)?.price,
-            "consultation_fees": 200,
+            "consultation_fees": consultantfee,
             "payment_status": "Success"
         }
         const resp = await axios.post(API_URL + "/hospital/receptionist/store-reservation", data, {
@@ -40,9 +94,10 @@ const CreateAppointment = () => {
             },
         });
         if (!resp.data.error) {
-            toast.success('Appointment fixed');
-            setSlots([]);
-            setUdata({});
+            setOrder(resp.data.data);
+            // toast.success('Appointment fixed');
+            // setSlots([]);
+            // setUdata({});
         }
     }
 
@@ -79,6 +134,9 @@ const CreateAppointment = () => {
         console.log(e.target.value)
     }
     const getbgcolor = (itm) => {
+        if (slot_id == itm._id) {
+            return 'bg-green-600 text-white';
+        }
         if (itm.label == "Reserved") {
             return 'bg-blue-700 text-white';
         }

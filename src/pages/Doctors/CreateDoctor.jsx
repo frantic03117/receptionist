@@ -166,7 +166,7 @@ const CreateDoctor = () => {
                             </Grid>
 
 
-                            <form autoComplete='off' onSubmit={handleSubmit}>
+                            <form autoComplete='off' className='block w-full h-full mb-20 ' onSubmit={handleSubmit}>
                                 <Grid container spacing={2}>
                                     <Grid item md={3} xs={6}>
                                         <TextField
@@ -337,8 +337,6 @@ const CreateDoctor = () => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <div className="w-full  max-h-60 overflow-y-auto">
-
-
                                             <table className='w-full'>
                                                 <thead>
                                                     <tr className='*:text-start'>

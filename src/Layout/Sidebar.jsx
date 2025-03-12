@@ -64,7 +64,7 @@ const Sidebar = () => {
                         <SideLink title={'Create Appointment'} url={'consultants/create'} icon={<FaUserDoctor />} />
                     </li>
                 </ul>
-                <div className="w-full border-t bg-[var(--primary)] border-gray-400 px-4 py-2 absolute bottom-0 start-0">
+                <div className="w-full border-t bg-[var(--primary)] border-gray-400 px-4 py-2">
                     <ul>
                         <li className='ps-3'>
                             <button onClick={logout} className="flex  text-white gap-3 justify-between">

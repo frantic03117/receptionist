@@ -8,6 +8,7 @@ export const AppProvider = ({ children }) => {
     const [loading, setLoading] = React.useState(true);
     const [admin, setUser] = React.useState(null);
     const [side, setSide] = React.useState(false);
+    const [settings, setSettings] = React.useState([]);
     const handleSide = () => {
         setSide(!side);
     }
@@ -32,13 +33,24 @@ export const AppProvider = ({ children }) => {
             setLoading(false);
         }
     }
+    const fetchSettings = async () => {
+        const resp = await axios.get(API_URL + "/hospital/settings", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + mtoken
+            }
+        });
+        if (resp.data.data) {
+            setSettings(resp.data.data);
+        }
+    }
     useEffect(() => {
-
+        fetchSettings();
         fetchAdmin();
 
     }, [])
     return (
-        <AppContext.Provider value={{ admin, loading, handleSide, side }}>
+        <AppContext.Provider value={{ admin, loading, settings, handleSide, side }}>
             {children}
         </AppContext.Provider>
     )
